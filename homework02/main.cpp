@@ -119,7 +119,7 @@ ScoreSorter::ScoreSorter(QString dataFile)
 }
 void ScoreSorter::readFile()
 {
-    QFile file("E:/qthomework/homework02/data.txt");
+    QFile file(this->path);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug()<<"文件打开失败！"<<endl;
@@ -154,7 +154,7 @@ void ScoreSorter::doSort()
 }
 void ScoreSorter::expdata(quint8 lie)
 {
-    QFile file("E:/qthomework/homework02/sorted_data.txt");
+    QFile file("sorted_"+this->path);
     file.open(QIODevice::ReadWrite | QIODevice::Append);
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
