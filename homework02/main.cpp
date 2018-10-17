@@ -40,23 +40,15 @@ enum SortKind{
 };
 }
 typedef struct{
-    int col01;
-    QString col02;
-    int col03;
-    int col04;
-    int col05;
-    int col06;
-    int col07;
-    int col08;// 请补全结构定义
+    QStringList stu;// 请补全结构定义
 } studData;
 
 QDebug operator<< (QDebug d, const studData &data) {
 
-    QDebugStateSaver saver(d);
-    d.nospace()<<data.col01<<data.col02<<data.col03<<data.col04<<data.col05<<data.col06<<data.col07<<data.col08;// 请补全运算符重载函数，使其可以直接输出studData结构
+    for(int i;i<data.stu.size();i++)
+        d.noquote().nospace()<<QString(data.stu.at(i)<<"\t";// 请补全运算符重载函数，使其可以直接输出studData结构
     return d;
 }
-
 // 比较类，用于std::sort第三个参数
 class myCmp {
 public:
@@ -65,13 +57,14 @@ public:
 private:
     int currentColumn;
 };
-
+#define compare(m)   (d1.stud.at(m)>=d2.stud.at(m))?  1:0
 bool myCmp::operator()(const studData &d1, const studData &d2)
 {
     bool result = false;
     quint32 sortedColumn = 0x00000001<<currentColumn;
     switch (sortedColumn) {
-    case SK::col01:
+    case SK::col01:result=d1.stu.at(currentColumn+1)>=d2.stu.at(currentColumn+1);break;
+         default:;break;
     // ...
     // 请补全运算符重载函数
     // ...
@@ -86,15 +79,50 @@ class ScoreSorter
 {
 public:
     ScoreSorter(QString dataFile);
+    void readFile();
+    void doSort();
+    friend QDebug operator << (QDebug d, const studData &data);
+private:
+    QString tempfile;
+    QList<studData > data;
+    studData ListTitle;
+    void expData(quint8 lie);
     // ...
     // 请补全该类，使其实现上述要求
     // ...
-}
+};
 
 // 请补全
 ScoreSorter::ScoreSorter(QString dataFile){
+    this->tempfile = dataFile;
 }
+void ScoreSorter::doSort()
 
+{
+   for(int i;i<this->ListTitle.stu.size();i++)
+   {
+       myCmp stducmp(i-1);
+       std::sort(this->data.begin(),this->data.end(),stducmp);
+       qDebug()<<"排序后输出，第"<<i+1<<"列";
+       qDebug()<<'\t'<<(this->ListTitle);
+       for(int i=0;i<this->data.size();i++)
+       qDebug() << this->data.at(i);
+       qDebug()<<"---------------------------------------------------------------\n";
+       this->expData(i+1);
+   }
+}
+void ScoreSorter::readFile()
+
+{
+    QFile file(tempfile);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        qDebug()<<"文件打开失败\n";
+
+
+
+    file.close();
+
+}
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
