@@ -68,6 +68,31 @@ void CenterFrame::createUserCommandArea()
     p.fill(BACKGROUND_COLOR);
     painter.drawRect(3,3,p.size().width()-2*3,p.size().height()-2*3);
     btnRect->setIcon (QIcon(p));
+    //菱形按钮
+    btnDiamond = new QPushButton(group);
+    btnDiamond->setToolTip("绘制菱形");
+    btnDiamond->setCheckable(true);
+    btnDiamond->setIconSize(p.size());
+    connect(btnDiamond,&QPushButton::clicked,this,&CenterFrame::on_btnDiamondClicked);
+    p.fill(BACKGROUND_COLOR);
+    QPointF pt4(p.size().width()/2,2);
+    QPointF pt5(2,p.size().height()/2);
+    QPointF pt6(p.size().width()-2,p.size().height()/2);
+    QPointF pt7(p.size().width()/2,p.size().height()-2);
+    QVector<QPointF> ptt;
+    ptt<<pt4<<pt5<<pt5<<pt7<<pt7<<pt6<<pt6<<pt4;
+
+    painter.drawLines(ptt);
+
+    //QPointF pt1(3,p.size().height()-3);
+    //QPointF pt2(p.size().width()/2,3);
+    //QPointF pt3(-3+p.size().width(),-3+p.size().height());
+    //ptt<<pt4<<pt5<<pt5<<pt6<<pt6<<pt7<<pt7<<pt4;
+
+    // 使用drawLines时需要注意，点数必须为偶数，两两成对作为一个边
+    // 如果是奇数，最后一个点会被舍弃
+    //painter.drawLines(pts);
+    btnDiamond->setIcon (QIcon(p));
 
     // 圆形按钮
     btnEllipse = new QPushButton(group);
@@ -88,7 +113,7 @@ void CenterFrame::createUserCommandArea()
     btnLine->setIconSize(p.size());
 
     p.fill(BACKGROUND_COLOR);
-    painter.drawLine(3+3,p.size().height()-2*3,p.size().width()-2*3,3+3);
+    painter.drawLine(3,p.size().height()-2*3,p.size().width()-2*3,3+3);
     btnLine->setIcon (QIcon(p));
     connect(btnLine,&QPushButton::clicked,
             this,&CenterFrame::on_btnLineClicked);
@@ -139,8 +164,9 @@ void CenterFrame::createUserCommandArea()
     gridLayout->addWidget(btnLine,1,1);
     gridLayout->addWidget(btnText,2,0);
     gridLayout->addWidget(btnimg,2,1);
-    gridLayout->setMargin(3);
-    gridLayout->setSpacing(3);
+    gridLayout->addWidget(btnDiamond,3,0);
+    gridLayout->setMargin(4);
+    gridLayout->setSpacing(4);
     group->setLayout(gridLayout);
 }
 
@@ -214,6 +240,7 @@ void CenterFrame::updateButtonStatus()
     btnText->setChecked(false);
     edtText->setVisible(false);
     btnimg->setChecked(false);
+    btnDiamond->setChecked(false);
     // 然后根据设置的绘图类型重新切换按键状态
     switch (drawWidget->shapeType()) {
     case ST::Rectangle:
@@ -227,6 +254,9 @@ void CenterFrame::updateButtonStatus()
         break;
     case ST::image:
         btnimg->setChecked(true);
+        break;
+    case ST::Diamond:
+        btnDiamond->setChecked(true);
         break;
     case ST::Triangle:
         btnTriangle->setChecked(true);
@@ -323,6 +353,16 @@ void CenterFrame::on_btnimgClicke()
         updateButtonStatus();
     }else {
        drawWidget->setShapeType(ST::None);
+    }
+}
+
+void CenterFrame::on_btnDiamondClicked()
+{
+    if(btnDiamond->isChecked()){
+        drawWidget->setShapeType(ST::Diamond);
+        updateButtonStatus();
+    }else{
+        drawWidget->setShapeType(ST::None);
     }
 }
 void CenterFrame::on_edtTextEdited(const QString &text)

@@ -216,6 +216,16 @@ void DrawWidget::drawShape(const QPointF ptStart,const QPointF ptEnd,const ST::S
     case ST::Line:
         painter.drawLine(ptStart,ptEnd);
         break;
+    case ST::Diamond:{
+        QPoint point4((ptStart.x()+ptEnd.x())/2,ptStart.y());
+        QPoint point5(ptStart.x(),(ptStart.y()+ptEnd.y())/2);
+        QPoint point6(ptEnd.x(),(ptStart.y()+ptEnd.y())/2);
+        QPoint point7((ptStart.x()+ptEnd.x())/2,ptEnd.y());
+        QVector<QPoint> points;
+        points<<point4<<point5<<point7<<point6;
+        painter.drawPolygon(points);
+    }
+        break;
     case ST::Triangle:{
         //三角形的三个顶点
         QPointF point1( (ptStart.x()+ptEnd.x())/2,ptStart.y());
