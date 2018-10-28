@@ -54,7 +54,7 @@ void CenterFrame::createUserCommandArea()
     painter.drawImage(targetRect,image,sourceRect);
 
     btnimg->setIcon(QIcon(p));
-    connect(btnimg,&QPushButton::clicked,this,&CenterFrame::on_btnimgClicke);
+    connect(btnimg,&QPushButton::clicked,this,&CenterFrame::on_btnimgClicked);
 
 
     // 矩形按钮
@@ -291,6 +291,11 @@ void CenterFrame::clearPaint()
     drawWidget->clear();
 }
 
+void CenterFrame::on_btnimgClicked()
+{
+    drawWidget->imaGe ();
+}
+
 
  void CenterFrame::on_btnRectClicked()
 {
@@ -346,15 +351,7 @@ void CenterFrame::on_btnTextClicked()
     }
 }
 
-void CenterFrame::on_btnimgClicke()
-{
-    if(btnimg->isChecked()){
-        drawWidget->setShapeType(ST::image);
-        updateButtonStatus();
-    }else {
-       drawWidget->setShapeType(ST::None);
-    }
-}
+
 
 void CenterFrame::on_btnDiamondClicked()
 {

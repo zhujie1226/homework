@@ -1,8 +1,10 @@
 #include "drawwidget.h"
+
 #include <QMouseEvent>
 #include <QPen>
 #include <QMessageBox>
-
+#include <QPainter>
+#include <QPixmap>
 
 DrawWidget::DrawWidget(QWidget *parent) : QWidget(parent)
 {
@@ -105,7 +107,27 @@ void DrawWidget::resizeEvent (QResizeEvent *event)
    }
     QWidget::resizeEvent(event);
 }
+void DrawWidget::imaGe ()
+{
+    //QPainter painter(this);
+    //QPixmap pix;
 
+   //pix->fill(":/user");
+    pix->load(":/user");
+   //painter.drawLine(10,10,100,100);
+
+   // pix->fill (BACKGROUND_COLOR);
+    //btnimg->setCheckable(ture);
+    //btnimg->setIconSize(p.size());
+   // QPainter painter(&p);
+    //pix->setToolTip("图片");
+    //QImage image(":/user");
+      //QRect targetRect(0,0,300,300);
+   //QRect sourceRect=fill.rect();
+    //painter.drawImage(targetRect,fill,sourceRect);
+
+    update ();
+}
 
 void DrawWidget::clear ()
 {
