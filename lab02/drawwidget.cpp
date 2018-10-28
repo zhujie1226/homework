@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
+#include <QDateTime>
 
 DrawWidget::DrawWidget(QWidget *parent) : QWidget(parent)
 {
@@ -109,12 +110,21 @@ void DrawWidget::resizeEvent (QResizeEvent *event)
 }
 void DrawWidget::imaGe ()
 {
-    //QPainter painter(this);
-    //QPixmap pix;
+    QImage iconImage;
+    iconImage.load(":/user");    //QImage读取图片
+    QPixmap *newPix = new QPixmap(size());
+    *newPix=QPixmap(*this->pix);             //新的pix拷贝原内容,避免之前所画内容丢失
+    *pix = QPixmap::fromImage(iconImage.scaledToWidth(pix->size().width()*0.5 , Qt::FastTransformation));
+    QPainter p(newPix);                             //正中添加图片,宽度为当前窗口的0.5倍,高度自动缩放
+    p.drawPixmap (QPoint((width()-pix->width())/2,(height()-pix->width())/2), *pix);
+    delete pix;     //删除原pix
+    pix = newPix;
+    QPainter painter(this);
+    QPixmap pix;
 
    //pix->fill(":/user");
-    pix->load(":/user");
-   //painter.drawLine(10,10,100,100);
+//   pix->load(":/user");
+//   painter.drawPixmap(10,10,100,100,*pix);
 
    // pix->fill (BACKGROUND_COLOR);
     //btnimg->setCheckable(ture);
@@ -127,6 +137,13 @@ void DrawWidget::imaGe ()
     //painter.drawImage(targetRect,fill,sourceRect);
 
     update ();
+}
+void DrawWidget::save(){
+    QDateTime current_date_time =QDateTime::currentDateTime();     //当前时间作为文件名(避免覆盖)
+    QString currentDate =current_date_time.toString("ZZ");
+    QString fileName=tr("E:/qthomework/lab02/zz.png").arg(currentDate);
+    this->pix->save(fileName);         //保存文件
+    update();
 }
 
 void DrawWidget::clear ()

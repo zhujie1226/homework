@@ -33,6 +33,7 @@ public slots:
     void setPenWidth(int width=1);
     void setPenColor(QColor color);
     void clearPaint();
+    void saveimage();
     void on_btnimgClicked();
 
 protected slots:

@@ -291,6 +291,11 @@ void CenterFrame::clearPaint()
     drawWidget->clear();
 }
 
+void CenterFrame::saveimage()
+{
+    drawWidget->save();
+}
+
 void CenterFrame::on_btnimgClicked()
 {
     drawWidget->imaGe ();

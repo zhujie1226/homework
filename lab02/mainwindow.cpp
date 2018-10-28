@@ -67,15 +67,11 @@ void MainWindow::createToolBar ()
        connect (colorBtn, &QToolButton::clicked, this, &MainWindow::penColorChangged);
 
 
-       imaBtn =new QToolButton();
-       pixmap.fill (BACKGROUND_COLOR);
-       QPainter painter(&pixmap);
-       QImage image(":/user");
-       QRect targetRect(0,0,20,20);
-       QRect sourceRect=image.rect();
-       painter.drawImage(targetRect,image,sourceRect);
+       saveBtn =new QToolButton();
+       saveBtn->setText (tr("保存"));
+       saveBtn->setToolTip(tr("保存当前画板"));
+       connect (saveBtn, &QToolButton::clicked, centerFrame, &CenterFrame::saveimage);
 
-       imaBtn->setIcon(QIcon(pixmap));
 
 
 
@@ -92,7 +88,7 @@ void MainWindow::createToolBar ()
       toolBar->addWidget (widthLabel);
       toolBar->addWidget (widthSpinBox);
       toolBar->addWidget (colorBtn);
-      toolBar->addWidget(imaBtn);
+      toolBar->addWidget(saveBtn);
       toolBar->addSeparator();
       toolBar->addWidget (clearBtn);
   }
